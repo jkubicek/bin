@@ -1,0 +1,11 @@
+#!/bin/bash
+set -e
+
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+git branch --force backup/git-squash-to-main
+git checkout "$(git-main)"
+git pull
+git checkout -b $USER/$CURRENT_BRANCH
+git merge --squash $CURRENT_BRANCH
+git branch -D $CURRENT_BRANCH
+git commit

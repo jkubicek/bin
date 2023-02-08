@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+MAIN_BRANCH=$(git-main)
+
+if [ $MAIN_BRANCH = $CURRENT_BRANCH ]
+then
+  echo "Cannot run this command on the mainbranch"
+  exit 1
+fi
+git branch --force backup/cleanup
+git checkout $MAIN_BRANCH
+git pull
+
+echo "Now deleting branch" $CURRENT_BRANCH
+echo "To restore: git branch" $CURRENT_BRANCH "backup/cleanup"
+git branch -D $CURRENT_BRANCH
